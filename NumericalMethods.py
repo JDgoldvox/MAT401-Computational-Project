@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as npy
 
-stepSize = 0.50;
+stepSize = 40.50;
 total = 100.0;
 
 def func(x,y):
@@ -44,6 +44,8 @@ def rk2(f, x0, y0, xe, dx):
 # k3 = dx * f(x(n) + dx/2, y(n) + k2/2)
 # k4 = dx * f(x(n) + dx, y(n) + k3)
 # y(n+1) = y(n) + (k1 + 2k2, + 2k3 + k4 / 6)
+#xe = last time, dx = interval
+#x0 = time
 def rk4(f, x0, y0, xe, dx):
     stepCount = num_steps(x0, xe, dx)
     xx = npy.linspace(x0, xe, stepCount)
@@ -69,24 +71,26 @@ xa = npy.linspace(0, total, stepCount)
 ya = xa**5.0
     
 #Plot -----------------------------------------------------
-plt.plot(xa, ya, label = "real") #real answer
-plt.plot(euler_result_x, euler_result_y, label = "euler")
-plt.plot(rk2_result_x, rk2_result_y, label = "rk2")
-plt.plot(rk4_result_x, rk4_result_y, label = "rk4")
+#plt.plot(xa, ya, label = "real") #real answer
+#plt.plot(euler_result_x, euler_result_y, label = "euler")
+#plt.plot(rk2_result_x, rk2_result_y, label = "rk2")
+#plt.plot(rk4_result_x, rk4_result_y, label = "rk4")
 
-print(".", ya[-1])
-print(".", 20**5)
-print(".", xa[-1])
-print("Euler error: ", abs(ya[-1] - euler_result_y[-1]))
-print("rk2 error: ", abs(ya[-1] - rk2_result_y[-1]))
-print("rk4 error: ", abs(ya[-1] - rk4_result_y[-1]))
+#print(".", ya[-1])
+#print(".", 20**5)
+#print(".", xa[-1])
+#print("Euler error: ", abs(ya[-1] - euler_result_y[-1]))
+#print("rk2 error: ", abs(ya[-1] - rk2_result_y[-1]))
+#print("rk4 error: ", abs(ya[-1] - rk4_result_y[-1]))
 
-plt.legend()
-plt.show()
+#plt.legend()
+#plt.title(label="Euler vs rk2 vs rk4 results")
+#plt.show()
 
-plt.plot(ya, abs(ya-euler_result_y), label = "euler")
-plt.plot(ya, abs(ya-rk2_result_y), label = "rk2")
-plt.plot(ya, abs(ya-rk4_result_y), label = "rk4")
+#plt.plot(ya, abs(ya-euler_result_y), label = "euler")
+#plt.plot(ya, abs(ya-rk2_result_y), label = "rk2")
+#plt.plot(ya, abs(ya-rk4_result_y), label = "rk4")
 
-plt.legend()
-plt.show()
+#plt.legend()
+#plt.title(label="Euler vs rk2 vs rk4 error difference")
+#plt.show()
