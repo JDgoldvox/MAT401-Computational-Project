@@ -2,6 +2,7 @@ import NumericalMethods
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as npy
+import math
 
 mass = 5
 radius = 2
@@ -10,8 +11,7 @@ w0 = 1, 2, 3
 timeStart, timeEnd = 0, 20
 steps = 0.01;
 
-velocity0 = 0, 0, 200
-acceleration = 0, 0, -9.8
+velocity0 = npy.array([0,0,200])
 
 def solve_intertia_tensor(mass, radius, height):
     I1 = (3/20) * mass * ((radius**2) + (1/4 * height**2))
@@ -38,7 +38,25 @@ def solve_euler_equation(t,  w0):
     
     return npy.array([Wx, Wy, Wz])
 
+def calculate_angular_speed(wx, wy, wz):
+    
+    #Create an array of zeros with the same length as wx
+    angular_speed = npy.zeros(len(wx)) 
+    
+    #Solve for magnitude
+    for i in range(0, len(wx)):
+        x = wx[i] ** 2
+        y = wy[i] ** 2
+        z = wz[i] ** 2
+        
+        angular_speed[i] = math.sqrt(x + y + z)
+       
+    return angular_speed
+
 def main():
+    
+    #Q1, Q2 ---------------------------------------------------------------
+    
     #f = solve_euler_equation
     #x0 = timeStart
     #y0 = w0
@@ -51,16 +69,48 @@ def main():
     wy_values = yy[:, 1]  #wy
     wz_values = yy[:, 2]  #wz
     
-    #2D Plot 
+    angular_speed = calculate_angular_speed(wx_values,wy_values,wz_values)
+    
     plt.figure()
     plt.plot(xx, wx_values, label="wx")
     plt.plot(xx, wy_values, label="wy")
     plt.plot(xx, wz_values, label="wz")
+    plt.plot(xx, angular_speed, label="angular velocity")
     plt.xlabel("Time")
     plt.ylabel("Angular Velocity")
+    
     plt.legend()
     plt.title("Task 2 - Anguler velocity over t [0,20]")
     plt.show()
+    
+    #Q3, Q4 ---------------------------------------------------------------
+    
+    displacement, velocity, time = NumericalMethods.implicit_euler(timeStart, velocity0, timeEnd, steps)
+    
+    #xDisplacement = displacement[:, 0]  #wx
+    yDisplacement = displacement[:, 1]  #wy
+    #zDisplacement = displacement[:, 2]  #wz
+    
+    #xVelocity = velocity[:, 0]  #wx
+    yVelocity = velocity[:, 1]  #wy
+    #zVelocity = velocity[:, 2]  #wz
+    
+    plt.figure()
+    #plt.plot(time, xDisplacement, label="x Displacement")
+    plt.plot(time, yDisplacement, label="y Displacement")
+    #plt.plot(time, zDisplacement, label="z Displacement")
+
+    #plt.plot(time, xVelocity, label="x velocity")
+    plt.plot(time, yVelocity, label="y velocity")
+    #plt.plot(time, zVelocity, label="z velocity")
+    
+    plt.legend()
+    plt.title("Vertical velocity and displacement with a = 9.8 and z velocity = 200ms")
+    plt.show()
+    
+    #Q5 ---------------------------------------------------------------
+    
+    
     
 if __name__ == "__main__":
     main()
